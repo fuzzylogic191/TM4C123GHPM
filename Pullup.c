@@ -1,43 +1,33 @@
 #include <stdint.h>
-#include <stdio.h>
-#include <MyProject.h>
+#include "TM4C123.h"
+void delayms(int);
 
-
-/**
- * main.c
- */
-int main(void)
+void delayms(int time)
 {
-    volatile uint32_t ui32Loop;
-    SYSCTL_RCGC2_R |= 0x20;
-    GPIO_PORTF_LOCK_R = 0x4C4F434B;
-    GPIO_PORTF_CR_R = 0xff;
-    GPIO_PORTF_PUR_R = 0x11;
-    GPIO_PORTF_DIR_R = 0xE;
-    GPIO_PORTF_DEN_R = 0x1F;
-
-    while(1){
-
-        switch (GPIO_PORTF_DATA_R & 0x11)
-        {
-        case 0x00:
-            GPIO_PORTF_DATA_R = (1<<1);
-            break;
-        case 0x01:
-            GPIO_PORTF_DATA_R = (1<<2);
-            break;
-        case 0x10:
-            GPIO_PORTF_DATA_R = (1<<3);
-            break;
-        default:
-            GPIO_PORTF_DATA_R &= !((1<<1)|(1<<2)|(1<<3));
-
-        }
-
-       }
-
-
-    return 0;
+	int x,y;
+	for (x = 0; x<time; x++)
+	{
+		for (y = 0; y<7900;y++){
+		}
+	}
 }
+int main()
+{
+	SYSCTL->RCC|=0x02400540;  //Setting system clock
+  SYSCTL->RCGCGPIO |= 0x20; //Enable clock for GPIO's
+	GPIOF->DIR |= 0x02;       //PF1 is output
+	GPIOF->DEN |= 0x02;       //PF1 is digital function
 
+	while(1)
+		{
+		GPIOF->DATA = 0x02; //Turn Red LED on
+		delayms(1000);
+		GPIOF->DATA = 0x00;
+		delayms(1000);
+	}
+	
+	
+	return(0);
+	
+}
 
