@@ -1,32 +1,36 @@
 #include <stdint.h>
-#include <stdio.h>
-#include <MyProject.h>
+#include "TM4C123.h"
+void delayms(int);
 
-
-/**
- * main.c
- */
-int main(void)
+void delayms(int time)
 {
-    volatile uint32_t ui32Loop;
-    SYSCTL_RCGC2_R |= 0x20;
-    GPIO_PORTF_DIR_R = 0xE;
-    GPIO_PORTF_DEN_R = 0xE;
+	int x,y;
+	for (x = 0; x<time; x++)
+	{
+		for (y = 0; y<7900; y++){
+		}
+	}
+}
+int main()
+{
+	
+  SYSCTL->RCGCGPIO |= 0x20; //Enable clock for GPIO's
+	GPIOF->DIR |= 0xE;       //PF1 is output
+	GPIOF->DEN |= 0xE;       //PF1 is digital function
 
-    while(1){
-
-        GPIO_PORTF_DATA_R = 0x02;
-        for (ui32Loop = 0; ui32Loop < 200000; ui32Loop++){
-        }
-        GPIO_PORTF_DATA_R = 0x04;
-        for (ui32Loop = 0; ui32Loop < 200000; ui32Loop++){
-        }
-        GPIO_PORTF_DATA_R= 0x08;
-        for (ui32Loop = 0; ui32Loop < 200000; ui32Loop++){
-        }
-
-    }
-    return 0;
+	while(1)
+		{
+		GPIOF->DATA = 0x02; //Turn Red LED on
+		delayms(1000);
+		GPIOF->DATA = 0x04; //Turn Red LED on
+		delayms(1000);
+		GPIOF->DATA = 0x08;
+		delayms(1000);
+	}
+	
+	
+	return(0);
+	
 }
 
 
