@@ -1,14 +1,20 @@
 #include <stdint.h>
 #include "TM4C123.H"
 
-void Delay(unsigned long counter);
-char UART0_Receiver(void);
-void UART0_Transmitter(char data);
-
 int main()
 {
-
+char c;
+//Enable module using RCGCUART register
 SYSCTL->RCGCUART |= 0x01; //enable clock for UART0
+
+//Enable clock for correct GPIO module 
+SYSTCL->RCGCPIO |=0x01;
+
+//Enable the GPIO AFSEL
+SYSTCL->AFSEL(1<<1)|(1<<0);
+
+//Enable the alternet functions	
+	
 GPIOA->DEN = 0x03;     //  Make PA0 and PA1 as digital
 Delay(1)
 GPIOA->AFSEL = 0x03;  // Use PA0,PA1 alternate function
